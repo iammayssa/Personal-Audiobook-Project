@@ -11,17 +11,17 @@ Runtime -> Change Runtime Type -> Hardware Accelerator -> GPU
 """
 
 # Clone git repo
-#!git clone https://github.com/CorentinJ/Real-Time-Voice-Cloning.git
+"""!git clone https://github.com/CorentinJ/Real-Time-Voice-Cloning.git
 
-#cd Real-Time-Voice-Cloning/
+cd Real-Time-Voice-Cloning/
 
 # Install dependencies
-#!pip install -q -r requirements.txt
-#!apt-get install -qq libportaudio2
+!pip install -q -r requirements.txt
+!apt-get install -qq libportaudio2
 
 # Download dataset
-#!gdown https://drive.google.com/uc?id=1n1sPXvT34yXFLT47QZA6FIRGrwMeSsZc
-#!unzip pretrained.zip
+!gdown https://drive.google.com/uc?id=1n1sPXvT34yXFLT47QZA6FIRGrwMeSsZc
+!unzip pretrained.zip
 
 # Code for recording audio from the browser
 from IPython.display import Javascript
@@ -30,7 +30,7 @@ from base64 import b64decode
 import IPython
 import uuid
 from google.colab import output
-
+"""
 
 class InvokeButton(object):
   def __init__(self, title, callback):
@@ -128,24 +128,32 @@ encoder.load_model(encoder_weights)
 synthesizer = Synthesizer(syn_dir)
 vocoder.load_model(vocoder_weights)
 
+def adapt():
+  # adaptation de fréquence
+
+# alter the code in the original library
+
 #@title Deep vocoder
-def synth():
-  text = "This is being said in my own voice.  The computer has learned to do an impression of me." #@param {type:"string"}
-  print("Now recording for 10 seconds, say what you will...")
-  record(10)
-  print("Audio recording complete")
-  in_fpath = Path("audio.wav")
-  reprocessed_wav = encoder.preprocess_wav(in_fpath)
-  original_wav, sampling_rate = librosa.load(in_fpath)
-  preprocessed_wav = encoder.preprocess_wav(original_wav, sampling_rate)
-  embed = encoder.embed_utterance(preprocessed_wav)
-  print("Synthesizing new audio...")
-  with io.capture_output() as captured:
-    specs = synthesizer.synthesize_spectrograms([text], [embed])
-  generated_wav = vocoder.infer_waveform(specs[0])
-  generated_wav = np.pad(generated_wav, (0, synthesizer.sample_rate), mode="constant")
-  display(Audio(generated_wav, rate=synthesizer.sample_rate))
+  def synth():
+    text = "This is being said in my own voice.  The computer has learned to do an impression of me." #@param {type:"string"}
+    print("Now recording for 10 seconds, say what you will...")
+    record(10)
+    print("Audio recording complete")
+    in_fpath = Path("audio.wav")
+    reprocessed_wav = encoder.preprocess_wav(in_fpath)
+    original_wav, sampling_rate = librosa.load(in_fpath)
+    preprocessed_wav = encoder.preprocess_wav(original_wav, sampling_rate)
+    embed = encoder.embed_utterance(preprocessed_wav)
+    print("Synthesizing new audio...")
+    with io.capture_output() as captured:
+      specs = synthesizer.synthesize_spectrograms([text], [embed])
+    generated_wav = vocoder.infer_waveform(specs[0])
+    generated_wav = np.pad(generated_wav, (0, synthesizer.sample_rate), mode="constant")
+    display(Audio(generated_wav, rate=synthesizer.sample_rate))
 InvokeButton('Start recording', synth)
+
+# detailed description of the libraries
+# caractréstiques d'une voix
 
 import pickle
 Model = pickle.dumps(synthesizer)

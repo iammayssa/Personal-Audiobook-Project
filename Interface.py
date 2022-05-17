@@ -121,6 +121,8 @@ sample_format = pyaudio.paInt16
 channels = 2
 fs = 44100
 frames = []
+isrecording = False
+b = pyaudio.PyAudio()
 
 def startrecording():
 
@@ -131,10 +133,13 @@ def startrecording():
         print('Recording')
         t = threading.Thread(target=record)
         t.start()
+        while isrecording:
+            data = stream.read(chunk)
+            frames.append(data)
 def stoprecording():
         isrecording = False
         print('recording complete')
-        filename='test1'
+        filename='test12'
         filename = filename+".wav"
         #self.filename = asksaveasfile(initialdir = "/",title = "Save as",mode='w',filetypes = (("audio file","*.wav"),("all files","*.*")),defaultextension=".wav")
 
